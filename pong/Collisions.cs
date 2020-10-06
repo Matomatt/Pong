@@ -8,7 +8,7 @@ namespace pong
 {
     static class Collisions
     {
-        public static bool RectangleCircle(Rectangle rect, Vector2 centerPosition, float radius)
+        public static Collision RectangleCircle(Rectangle rect, Vector2 centerPosition, float radius)
         {
             //Inside
             if (centerPosition.Y < rect.Y + rect.Height && centerPosition.Y > rect.Y && centerPosition.X > rect.X && centerPosition.X < rect.X + rect.Width)
@@ -17,15 +17,15 @@ namespace pong
                 float cy = (centerPosition.Y - rect.Y < rect.Y + rect.Height - centerPosition.Y) ? centerPosition.Y - rect.Y : rect.Y + rect.Height - centerPosition.Y;
 
                 if (cx > radius && cy > radius)
-                    return false;
-                return true;
+                    return new Collision(false, RectangleCircleNormal(new Circle(centerPosition, radius), rect));
+                return new Collision(true, RectangleCircleNormal(new Circle(centerPosition, radius), rect));
             }
 
             //Outside
 
             if (rect.X > centerPosition.X + radius || rect.X + rect.Width < centerPosition.X - radius ||
                 rect.Y > centerPosition.Y + radius || rect.Y + rect.Height < centerPosition.Y - radius)
-                return false;
+                return new Collision(false, RectangleCircleNormal(new Circle(centerPosition, radius), rect));
 
             
 
@@ -42,9 +42,9 @@ namespace pong
                 centerPosition.X < rect.X && centerPosition.Y + rect.Height < rect.Y &&
                 Vector2.Distance(centerPosition, new Vector2(rect.X, rect.Y + rect.Height)) > radius
                )
-                return false;
+                return new Collision(false, RectangleCircleNormal(new Circle(centerPosition, radius), rect));
 
-            return true;
+            return new Collision(true, RectangleCircleNormal(new Circle(centerPosition, radius), rect));
         }
 
         public static Vector2 RectangleCircleNormal(Circle circle, Rectangle rect)
@@ -54,10 +54,12 @@ namespace pong
             //Inside
             if (centerPosition.Y < rect.Y + rect.Height && centerPosition.Y > rect.Y && centerPosition.X > rect.X && centerPosition.X < rect.X + rect.Width)
             {
-                float cx = (centerPosition.X - rect.X < rect.X + rect.Width - centerPosition.X) ? centerPosition.X - rect.X : rect.X + rect.Width - centerPosition.X;
-                float cy = (centerPosition.Y - rect.Y < rect.Y + rect.Height - centerPosition.Y) ? centerPosition.Y - rect.Y : rect.Y + rect.Height - centerPosition.Y;
+                float xDir = (centerPosition.X - rect.X < rect.X + rect.Width - centerPosition.X) ? 1 : -1;
+                float cx = (xDir == 1) ? centerPosition.X - rect.X : rect.X + rect.Width - centerPosition.X;
+                float yDir = (centerPosition.Y - rect.Y < rect.Y + rect.Height - centerPosition.Y) ? 1 : -1;
+                float cy = (yDir == 1) ? centerPosition.Y - rect.Y : rect.Y + rect.Height - centerPosition.Y;
 
-                return new Vector2((cx < cy) ? -1 : 0, (cx < cy) ? 0 : -1);
+                return new Vector2((cx < cy) ? xDir : 0, (cx < cy) ? 0 : yDir);
             }
 
             //Outside

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Matth/git/Pong/pong/Content/File.spritefont</SourceFile>
-  <SourceTime>2020-09-26T08:56:26.2457072+02:00</SourceTime>
-  <DestFile>C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/8bitFont.xnb</DestFile>
-  <DestTime>2020-10-06T17:52:01.9066141+02:00</DestTime>
+  <SourceFile>C:/Users/Matt/source/repos/Pong/pong/Content/File.spritefont</SourceFile>
+  <SourceTime>2020-10-06T11:49:19.9740549+02:00</SourceTime>
+  <DestFile>C:/Users/Matt/source/repos/Pong/pong/Content/bin/DesktopGL/Content/8bitFont.xnb</DestFile>
+  <DestTime>2020-10-06T11:50:07.758184+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
