@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "roteb1C2Dinz4iHkZKUOIDOWE/hCbbgWE0F347lFNq+hhu2SJ4TfZ2dirlh0B+cUndt/FdThJAxXHiso+LJyag==",
+  "dgSpecHash": "N7Ni56Uvf5LXVLBb6fe5ZyYcRd+4YleM85t0aN81xjI+xh6WqaepOhQaFk3jgISlrxahFmeOC8sZ5NSF5ZtAeg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Matt\\source\\repos\\Pong\\pong\\pong.csproj",
+  "projectFilePath": "C:\\Users\\Matth\\git\\Pong\\pong\\pong.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Matt\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
-    "C:\\Users\\Matt\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+    "C:\\Users\\Matth\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\Matth\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
   ],
   "logs": []
 }

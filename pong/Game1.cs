@@ -11,9 +11,12 @@ namespace pong
     {
         Texture2D ballTexture;
         Vector2 ballPosition;
+        Vector2 exBallPosition;
         Vector2 ballSpeed;
         Raquette raquette1;
         Raquette raquette2;
+        LoadingBar loadingBar1;
+        LoadingBar loadingBar2;
         int lost = 0;
         int score1 = 0, score2 = 0;
 
@@ -31,7 +34,7 @@ namespace pong
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1600,
-                PreferredBackBufferHeight = 1200
+                PreferredBackBufferHeight = 800
             };
 
             this.Window.AllowUserResizing = true;
@@ -49,6 +52,8 @@ namespace pong
             InitRaquette();
 
             field = new RectanglePrimitive(GraphicsDevice, new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.LawnGreen, 100);
+            loadingBar1 = new LoadingBar(GraphicsDevice, raquette1.COOLDOWNTIME, Color.AliceBlue, Color.OrangeRed, raquette1.COOLDOWNTIME);
+            loadingBar2 = new LoadingBar(GraphicsDevice, raquette2.COOLDOWNTIME, Color.AliceBlue, Color.OrangeRed, raquette2.COOLDOWNTIME);
 
             base.Initialize();
         }
@@ -56,7 +61,7 @@ namespace pong
         private void InitBall(bool toTheRight = true)
         {
             ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            ballSpeed = new Vector2(50f * ((toTheRight)?1:-1), 0f);
+            ballSpeed = new Vector2(250f * ((toTheRight)?1:-1), 0f);
         }
 
         private void InitRaquette()
@@ -68,14 +73,15 @@ namespace pong
         private void ReinitRaquettePos()
         {
             raquette1.position = new Vector2(_graphics.PreferredBackBufferWidth - 64, _graphics.PreferredBackBufferHeight / 2);
+            raquette1.Reset();
             raquette2.position = new Vector2(64, _graphics.PreferredBackBufferHeight / 2);
+            raquette2.Reset();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             ballTexture = Content.Load<Texture2D>("ball");
             ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
@@ -108,18 +114,24 @@ namespace pong
             raquette1.Move(kstate.IsKeyDown(Keys.O), kstate.IsKeyDown(Keys.L), kstate.IsKeyDown(Keys.K), kstate.IsKeyDown(Keys.M), gameTime);
             raquette2.Move(kstate.IsKeyDown(Keys.Z), kstate.IsKeyDown(Keys.S), kstate.IsKeyDown(Keys.Q), kstate.IsKeyDown(Keys.D), gameTime);
 
+            if (kstate.IsKeyDown(Keys.Enter))
+                raquette1.Boost();
+            if (kstate.IsKeyDown(Keys.Space))
+                raquette2.Boost();
+
+            exBallPosition = ballPosition;
             ballPosition += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
             //       COLLISIONS       \\
 
-            ballSpeed = raquette1.CalculateBallCollisions(new Circle(ballPosition, ballTexture.Width / 2), ballSpeed);
-            ballSpeed = raquette2.CalculateBallCollisions(new Circle(ballPosition, ballTexture.Width / 2), ballSpeed);
+            ballSpeed = raquette1.CalculateBallCollisions(new Circle(ballPosition, ballTexture.Width / 2), ballSpeed, exBallPosition);
+            ballSpeed = raquette2.CalculateBallCollisions(new Circle(ballPosition, ballTexture.Width / 2), ballSpeed, exBallPosition);
 
             Collision collision;
             if ((collision = Collisions.RectangleCircle(new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), ballPosition, ballTexture.Width / 2)).contact)
             {
-                ballSpeed = Collisions.CircleBounceOnRectangle(new Circle(ballPosition, ballTexture.Width / 2), new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), ballSpeed, Vector2.Zero);
+                ballSpeed = Collisions.CircleBounceOnRectangle(new Circle(exBallPosition, ballTexture.Width / 2), new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), ballSpeed, Vector2.Zero);
                 if (collision.normal.X != 0)
                 {
                     if (collision.normal.X == 1)
@@ -129,16 +141,19 @@ namespace pong
                     InitBall(raquette1.Lost(ballPosition));
                     ReinitRaquettePos();
                     scc.clear();
-                    scc.write(score2 + " : " + score1);
+                    scc.write("   " + score2 + " : " + score1);
                     //lost = 1;
                 }
             }
 
 
-            //       ANIMATIONS       \\
+            //       OBJECT UPDATES       \\
 
-            raquette1.Animate(gameTime);
-            raquette2.Animate(gameTime);
+            raquette1.Update(gameTime);
+            raquette2.Update(gameTime);
+
+            loadingBar1.setValue(raquette1.COOLDOWNTIME - raquette1.coolDown);
+            loadingBar2.setValue(raquette2.COOLDOWNTIME - raquette2.coolDown);
 
 
             //       LAST UPDATES       \\
@@ -155,6 +170,9 @@ namespace pong
 
             DrawRectangle(field);
 
+            loadingBar1.Draw(_spriteBatch, _graphics.PreferredBackBufferWidth - 20, 0, _graphics.PreferredBackBufferHeight, 20);
+            loadingBar2.Draw(_spriteBatch, 0, 0, _graphics.PreferredBackBufferHeight, 20);
+
             DrawRaquette(raquette1);
             DrawRaquette(raquette2);
 
@@ -164,6 +182,9 @@ namespace pong
             //DrawCircle(raquette2.CircularBounceHitbox());
             //DrawVector(Collisions.CircleCircleNormal(new Circle(ballPosition, ballTexture.Width / 2), raquette1.CircularBounceHitbox())*50f, raquette1.CircularBounceHitbox().centerPosition);
             //DrawVector(Collisions.CircleCircleNormal(new Circle(ballPosition, ballTexture.Width / 2), raquette2.CircularBounceHitbox()) * 50f, raquette2.CircularBounceHitbox().centerPosition);
+            //DrawVector(Collisions.RectangleCircleNormal(new Circle(ballPosition, ballTexture.Width / 2), raquette1.HitboxRectangle()) * 50f, raquette1.position);
+            //DrawVector(Collisions.RectangleCircleNormal(new Circle(ballPosition, ballTexture.Width / 2), raquette2.HitboxRectangle()) * 50f, raquette2.position);
+            //DrawVector(Collisions.RectangleCircleNormal(new Circle(ballPosition, ballTexture.Width / 2), new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)) * 50f, ballPosition);
 
             //DrawVector(Collisions.CircleBounceOnRectangle(new Circle(ballPosition, ballTexture.Width / 2), raquette1.HitboxRectangle(), ballSpeed, Vector2.Zero), ballPosition);
 

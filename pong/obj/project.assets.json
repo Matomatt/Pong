@@ -174,25 +174,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Matt\\.nuget\\packages\\": {},
+    "C:\\Users\\Matth\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Matt\\source\\repos\\Pong\\pong\\pong.csproj",
+      "projectUniqueName": "C:\\Users\\Matth\\git\\Pong\\pong\\pong.csproj",
       "projectName": "pong",
-      "projectPath": "C:\\Users\\Matt\\source\\repos\\Pong\\pong\\pong.csproj",
-      "packagesPath": "C:\\Users\\Matt\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Matt\\source\\repos\\Pong\\pong\\obj\\",
+      "projectPath": "C:\\Users\\Matth\\git\\Pong\\pong\\pong.csproj",
+      "packagesPath": "C:\\Users\\Matth\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Matth\\git\\Pong\\pong\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Matt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
