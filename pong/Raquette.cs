@@ -26,6 +26,10 @@ namespace pong
 
         public RectanglePrimitive hitbox;
 
+        private const double COOLDOWNSTART = 0.2;
+        private const float BOOSTSPEEDRATIO = 2f;
+        private double coolDown = 0;
+
         public Raquette(Vector2 pos, bool _direction = true, float _baseSpeed = 600f, float _catchUpSpeed = 0.3f, int _FPS = 12)
         {
             position = pos;
@@ -67,6 +71,20 @@ namespace pong
             return isAnimating;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            Animate(gameTime);
+            if (coolDown > 0)
+                coolDown -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (coolDown < 0)
+            {
+                coolDown = 0;
+                baseSpeed /= BOOSTSPEEDRATIO;
+            }
+                
+                
+        }
+
         public void Animate(GameTime gameTime)
         {
             if (isAnimating)
@@ -95,6 +113,15 @@ namespace pong
             position += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
+        public void Boost()
+        {
+            if (coolDown == 0)
+            {
+                baseSpeed *= BOOSTSPEEDRATIO;
+                coolDown = COOLDOWNSTART;
+            }
+        }
+
         public Rectangle HitboxRectangle()
         {
             Point p = new Point((int)(position.X - hitbox.size.X / 2), (int)(position.Y - hitbox.size.Y / 2));
@@ -105,20 +132,22 @@ namespace pong
         {
             if (Collisions.RectangleCircle(HitboxRectangle(), ball.centerPosition, ball.radius).contact)
             {
-                if (!colliding)
-                {
-                    colliding = true;
-                    StartAnimation(true);
-                    if (ball.centerPosition.X < position.X - hitbox.size.X / 2 && direction || ball.centerPosition.X > position.X + hitbox.size.X / 2 && !direction)
-                        ballSpeed = Collisions.CircleBounceOnCircle((direction)?CircularBounceHitbox():ball, (direction)?ball:CircularBounceHitbox(), ballSpeed, speed);
-                    else
-                        ballSpeed = Collisions.CircleBounceOnRectangle(ball, HitboxRectangle(), ballSpeed, speed);
-                    float sp = Vector2.Distance(new Vector2(0, 0), ballSpeed);
-                    if (sp > 1020) sp = 1020f;
-                    ballSpeed = Vector2.Normalize(ballSpeed) * (float)((-4 * Math.Pow(sp, 3) * Math.Pow(10, -7)) + 5 * Math.Pow(sp, 2) * Math.Pow(10, -4) + 0.87 * sp + 20);
-                }
+                colliding = true;
+
+                if (ball.centerPosition.X < position.X - hitbox.size.X / 2 && direction || ball.centerPosition.X > position.X + hitbox.size.X / 2 && !direction)
+                    ballSpeed = Collisions.CircleBounceOnCircle((direction) ? CircularBounceHitbox() : ball, (direction) ? ball : CircularBounceHitbox(), ballSpeed, speed);
+                else
+                    ballSpeed = Collisions.CircleBounceOnRectangle(ball, HitboxRectangle(), ballSpeed, speed);
+
+                float sp = Vector2.Distance(new Vector2(0, 0), ballSpeed);
+                if (sp > 1020) sp = 1020f;
+                ballSpeed = Vector2.Normalize(ballSpeed) * (float)((-4 * Math.Pow(sp, 3) * Math.Pow(10, -7)) + 5 * Math.Pow(sp, 2) * Math.Pow(10, -4) + 0.87 * sp + 20);
             }
-            else colliding = false;
+            else if (colliding)
+            {
+                StartAnimation(true);
+                colliding = false;
+            }
 
             return ballSpeed;
         }

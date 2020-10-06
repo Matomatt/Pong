@@ -108,6 +108,11 @@ namespace pong
             raquette1.Move(kstate.IsKeyDown(Keys.O), kstate.IsKeyDown(Keys.L), kstate.IsKeyDown(Keys.K), kstate.IsKeyDown(Keys.M), gameTime);
             raquette2.Move(kstate.IsKeyDown(Keys.Z), kstate.IsKeyDown(Keys.S), kstate.IsKeyDown(Keys.Q), kstate.IsKeyDown(Keys.D), gameTime);
 
+            if (kstate.IsKeyDown(Keys.Enter))
+                raquette1.Boost();
+            if (kstate.IsKeyDown(Keys.Space))
+                raquette2.Boost();
+
             ballPosition += ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
@@ -135,10 +140,10 @@ namespace pong
             }
 
 
-            //       ANIMATIONS       \\
+            //       OBJECT UPDATES       \\
 
-            raquette1.Animate(gameTime);
-            raquette2.Animate(gameTime);
+            raquette1.Update(gameTime);
+            raquette2.Update(gameTime);
 
 
             //       LAST UPDATES       \\

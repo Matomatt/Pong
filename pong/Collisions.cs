@@ -108,7 +108,12 @@ namespace pong
         public static Vector2 CircleBounceOnCircle(Circle circle1, Circle circle2, Vector2 circle1Speed, Vector2 circle2Speed)
         {
             Vector2 angleVect = CircleCircleNormal(circle1, circle2);
-            return PushedBySpeed((circle1Speed - 2 * Vector2.Dot(angleVect, circle1Speed) * angleVect), circle2Speed, angleVect);
+            Vector2 refractedSpeed = (circle1Speed - 2 * Vector2.Dot(angleVect, circle1Speed) * angleVect);
+            if (refractedSpeed.X / Math.Abs(refractedSpeed.X) != angleVect.X / Math.Abs(angleVect.X))
+                refractedSpeed.X *= -1;
+            if (refractedSpeed.Y / Math.Abs(refractedSpeed.Y) != angleVect.Y / Math.Abs(angleVect.Y))
+                refractedSpeed.Y *= -1;
+            return PushedBySpeed(refractedSpeed, circle2Speed, angleVect);
         }
     }
 }
