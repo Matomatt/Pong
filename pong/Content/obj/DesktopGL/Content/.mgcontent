@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/ball.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/circle.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/raquette1.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/raquette2.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/raquette3.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/../Sprites/vector.png</File>
+    <File>C:/Users/Matth/source/repos/pong/pong/Content/File.spritefont</File>
+  </SourceFiles>
+  <DestFiles>
+    <File>ball.png</File>
+    <File>circle.png</File>
+    <File>raquette1.png</File>
+    <File>raquette2.png</File>
+    <File>raquette3.png</File>
+    <File>vector.png</File>
+    <File>8bitFont.spritefont</File>
+  </DestFiles>
+</SourceFileCollection>
