@@ -1,14 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace pong
 {
     class ScreenConsole
     {
-        List<string> log = new List<string>();
-        int width, height;
-        SpriteFont font;
+        readonly List<string> log = new List<string>();
+        private readonly int width;
+        private readonly int height;
+        readonly SpriteFont font;
 
         public ScreenConsole(int _width, int _height, SpriteFont _font)
         {
@@ -41,6 +43,11 @@ namespace pong
                 _spriteBatch.DrawString(font, log[i], new Vector2(0, y + ((height < totH) ? (height - totH) : 0)), Color.DarkSlateBlue);
                 y += (int)font.MeasureString(log[i]).Y;
             }
+        }
+
+        internal void clear()
+        {
+            log.Clear();
         }
     }
 }

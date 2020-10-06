@@ -9,11 +9,11 @@ namespace pong
 {
     class Raquette
     {
-        Texture2D[] sprites = new Texture2D[3];
+        readonly Texture2D[] sprites = new Texture2D[3];
         int actualSprite = 0;
         bool isAnimating = false;
         bool animateOnce = false;
-        int FPS;
+        readonly int FPS;
         double countDown;
 
         public Vector2 position;
@@ -34,10 +34,10 @@ namespace pong
             speed = Vector2.Zero;
             catchUpSpeed = _catchUpSpeed;
             FPS = _FPS;
-            resetCountdown();
+            ResetCountdown();
         }
 
-        private void resetCountdown()
+        private void ResetCountdown()
         {
             countDown = 1.0 / (double)FPS;
         }
@@ -55,7 +55,7 @@ namespace pong
             return sprites[actualSprite];
         }
 
-        public bool startAnimation(bool _animateOnce = false)
+        public bool StartAnimation(bool _animateOnce = false)
         {
             if (!isAnimating)
                 isAnimating = true;
@@ -75,7 +75,7 @@ namespace pong
             if (isAnimating && countDown <= 0)
             {
                 actualSprite = (actualSprite + 1) % sprites.Length;
-                resetCountdown();
+                ResetCountdown();
                 if (animateOnce && actualSprite == 0)
                     isAnimating = false;
             }
@@ -103,12 +103,12 @@ namespace pong
 
         public Vector2 CalculateBallCollisions(Circle ball, Vector2 ballSpeed)
         {
-            if (Collisions.RectangleCircle(HitboxRectangle(), ball.centerPosition, ball.radius))
+            if (Collisions.RectangleCircle(HitboxRectangle(), ball.centerPosition, ball.radius).contact)
             {
                 if (!colliding)
                 {
                     colliding = true;
-                    startAnimation(true);
+                    StartAnimation(true);
                     if (ball.centerPosition.X < position.X - hitbox.size.X / 2 && direction || ball.centerPosition.X > position.X + hitbox.size.X / 2 && !direction)
                         ballSpeed = Collisions.CircleBounceOnCircle((direction)?CircularBounceHitbox():ball, (direction)?ball:CircularBounceHitbox(), ballSpeed, speed);
                     else
@@ -130,7 +130,7 @@ namespace pong
 
         public bool Lost(Vector2 ballPos)
         {
-            return (ballPos.X > position.X) && direction || (ballPos.X < position.X) && !direction;
+            return (ballPos.X > position.X+sprites[0].Width) && direction || (ballPos.X < position.X-sprites[0].Width) && !direction;
         }
     }
 }
