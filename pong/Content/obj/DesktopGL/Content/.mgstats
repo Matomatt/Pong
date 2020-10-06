@@ -1,1 +1,8 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/ball.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/ball.xnb","TextureProcessor","Texture2DContent",2368,4181,0,1916985
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/circle.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/circle.xnb","TextureProcessor","Texture2DContent",49340,3841685,0,1420568
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/raquette1.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/raquette1.xnb","TextureProcessor","Texture2DContent",650,65621,0,0056272
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/raquette2.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/raquette2.xnb","TextureProcessor","Texture2DContent",651,65621,0,0043734
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/raquette3.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/raquette3.xnb","TextureProcessor","Texture2DContent",570,65621,0,004575
+"C:/Users/Matth/git/Pong/pong/Content/../Sprites/vector.png","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/vector.xnb","TextureProcessor","Texture2DContent",188,20989,0,0034037
+"C:/Users/Matth/git/Pong/pong/Content/File.spritefont","C:/Users/Matth/git/Pong/pong/Content/bin/DesktopGL/Content/8bitFont.xnb","FontDescriptionProcessor","SpriteFontContent",2011,21538,0,1088349
