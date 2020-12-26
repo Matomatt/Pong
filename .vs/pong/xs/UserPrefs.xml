@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{CA9B8832-5FA8-4637-92A5-24562AADF09E}|Play in Editor">
+  <MonoDevelop.Ide.Workbench ActiveDocument="player.cs">
+    <Files>
+      <File FileName="player.cs" Line="44" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="pong" expanded="True">
+            <Node name="Pong" expanded="True">
+              <Node name="player.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Pong PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
