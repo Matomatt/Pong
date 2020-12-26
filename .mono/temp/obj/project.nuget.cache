@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GOatDkYtWDp5OheBbIH+Q+0HLwaPhF7QcPHsK06m13tm8j3LbBa8rbfYo4lM8TvSpvVeNtbksZRpvM5T+6a82A==",
+  "dgSpecHash": "q3EesVf1hAnXv5Fz3NXChiAhXjzqOJFDnwqtUYAT3/69RPLzjAJpJtyeF6bKAMJzIr4s41+bqs1GirDX3xb65g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Matth\\git\\Pongodot\\Pong.csproj",
+  "projectFilePath": "C:\\Users\\Matth\\git\\Pong\\Pong.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

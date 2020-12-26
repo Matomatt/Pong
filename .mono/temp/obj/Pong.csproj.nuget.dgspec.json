@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Matth\\git\\Pongodot\\Pong.csproj": {}
+    "C:\\Users\\Matth\\git\\Pong\\Pong.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Matth\\git\\Pongodot\\Pong.csproj": {
+    "C:\\Users\\Matth\\git\\Pong\\Pong.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Matth\\git\\Pongodot\\Pong.csproj",
+        "projectUniqueName": "C:\\Users\\Matth\\git\\Pong\\Pong.csproj",
         "projectName": "Pong",
-        "projectPath": "C:\\Users\\Matth\\git\\Pongodot\\Pong.csproj",
+        "projectPath": "C:\\Users\\Matth\\git\\Pong\\Pong.csproj",
         "packagesPath": "C:\\Users\\Matth\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Matth\\git\\Pongodot\\.mono\\temp\\obj\\",
+        "outputPath": "C:\\Users\\Matth\\git\\Pong\\.mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
