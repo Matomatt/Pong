@@ -4,18 +4,30 @@
 [ext_resource path="res://player.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 21.4218
-height = 71.0176
+radius = 2.32156
+height = 10.3423
 
 [node name="mainscene" type="Node2D"]
 
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+[node name="raquette1" type="KinematicBody2D" parent="."]
+position = Vector2( 32, 128 )
 script = ExtResource( 2 )
 
-[node name="raquette1" type="Sprite" parent="KinematicBody2D"]
-position = Vector2( 420, 259 )
+[node name="raquetteSprite" type="Sprite" parent="raquette1"]
+texture = ExtResource( 1 )
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="raquette1"]
+shape = SubResource( 1 )
+
+[node name="raquette2" type="KinematicBody2D" parent="."]
+position = Vector2( 480, 128 )
+script = ExtResource( 2 )
+playerNumber = 2
+flip = false
+
+[node name="raquetteSprite" type="Sprite" parent="raquette2"]
 texture = ExtResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-position = Vector2( 424.971, 258.801 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="raquette2"]
 shape = SubResource( 1 )
