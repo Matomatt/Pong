@@ -21,12 +21,14 @@ config/icon="res://icon.png"
 
 [debug]
 
-settings/fps/force_fps=60
+settings/fps/force_fps=90
+settings/stdout/print_fps=true
 
 [display]
 
 window/size/width=512
 window/size/height=256
+window/stretch/mode="viewport"
 
 [input]
 

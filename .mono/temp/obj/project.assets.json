@@ -8,24 +8,33 @@
     ".NETFramework,Version=v4.7.2": []
   },
   "packageFolders": {
-    "/home/matt/.nuget/packages/": {}
+    "C:\\Users\\Matth\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/matt/git/Pong/Pong.csproj",
+      "projectUniqueName": "C:\\Users\\Matth\\git\\Pong\\Pong.csproj",
       "projectName": "Pong",
-      "projectPath": "/home/matt/git/Pong/Pong.csproj",
-      "packagesPath": "/home/matt/.nuget/packages/",
-      "outputPath": "/home/matt/git/Pong/.mono/temp/obj/",
+      "projectPath": "C:\\Users\\Matth\\git\\Pong\\Pong.csproj",
+      "packagesPath": "C:\\Users\\Matth\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Matth\\git\\Pong\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "/home/matt/.config/NuGet/NuGet.Config"
+        "C:\\Users\\Matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net472"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -40,7 +49,9 @@
       }
     },
     "frameworks": {
-      "net472": {}
+      "net472": {
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+      }
     }
   }
 }
