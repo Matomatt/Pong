@@ -12,11 +12,12 @@ public class player : KinematicBody2D
 	[Export]
 	private bool flip = true;
 	[Export]
-	private int moveSpeed = 300;
+	private int moveSpeed = 350;
 	private Vector2 playerSpeed = new Vector2(0, 0);
 	private int lastSpeed;
+	private int collisionPush = 100;
 	[Export]
-	private int acceleration = 10;
+	private int acceleration = 20;
 	[Export]
 	private float dashTime = 0.2f;
 	[Export]
@@ -24,7 +25,7 @@ public class player : KinematicBody2D
 	private bool dashing = false;
 	private Vector2 direction;
 	[Export]
-	private float dashCooldown = 2;
+	private float dashCooldown = 3;
 	private DateTime lastDash = DateTime.Now;
 	private CPUParticles2D dashParticles;
 
@@ -32,14 +33,14 @@ public class player : KinematicBody2D
 	{
 		pn = playerNumber.ToString();
 		this.GetChild<Sprite>(0).FlipH = flip;
+		CollisionPolygon2D hitbox = this.GetChild<CollisionPolygon2D>(1);
+		if (flip) hitbox.Transform = new Transform2D((float)Math.PI, -1*hitbox.Transform.origin);
 		dashParticles = this.GetChild<CPUParticles2D>(2);
-		dashParticles.Transform = new Godot.Transform2D(0, new Vector2(dashParticles.Transform.origin.x * ((flip) ? -1 : 1), dashParticles.Transform.origin.y));
+		dashParticles.Transform = new Transform2D(0, new Vector2(dashParticles.Transform.origin.x * ((flip) ? -1 : 1), dashParticles.Transform.origin.y));
 		if (flip) { dashParticles.Gravity *= -1; dashParticles.Direction *= -1; }
 	}
-	//CollisionShape2D hitbox = this.GetChild<CollisionShape2D>(1);
-	//hitbox.Transform = new Godot.Transform2D(0, new Vector2(5 * ((flip) ? -1 : 1), hitbox.Transform.origin.y));
 
-	public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(float delta)
 	{
 		if (Input.IsActionPressed("quit")) GetTree().Quit();
 		if (lastDash.CompareTo(DateTime.Now) > 0) dashParticles.Emitting = false;
@@ -53,35 +54,54 @@ public class player : KinematicBody2D
 		speedGoal = ((!dashing)? speedGoal : direction) * moveSpeed;
 		playerSpeed = playerSpeed.LinearInterpolate(speedGoal, acceleration * delta);
 		MoveAndSlide(playerSpeed);
+		for (int i = 0; i < GetSlideCount(); i++)
+        {
+			string colliderName = ((Node2D)GetSlideCollision(i).Collider).Name;
+			if (colliderName == "ball")
+				((ball)GetSlideCollision(i).Collider).collideWith(this, delta, -1*GetSlideCollision(i).Normal);
+		}
 	}
 
-    private void Dash()
+	internal Vector2 getSpeed()
+	{
+		return playerSpeed;
+	}
+
+	private async void Dash()
     {
 		dashing = true;
 		lastSpeed = moveSpeed;
         moveSpeed = (int)(moveSpeed * dashSpeedMultiplier);
 		direction = playerSpeed.Normalized();
+		BurstDashParticles();
+		DashTimeout(dashTime);
+		await Task.Delay(TimeSpan.FromMilliseconds(dashTime * 1000f + 500));
+		ResetDashParticles();
+	}
+    private async void DashTimeout(float time)
+	{
+		await Task.Delay(TimeSpan.FromMilliseconds(time * 1000f));
+
+        moveSpeed = lastSpeed;
+		lastDash = DateTime.Now.AddSeconds(dashCooldown);
+		dashing = false;
+	}
+	private void BurstDashParticles()
+    {
 		dashParticles.InitialVelocity = 100;
 		dashParticles.LinearAccel = 100;
 		dashParticles.Amount *= 10;
 		dashParticles.ColorRamp.Colors[0] = Colors.DarkRed;
 		dashParticles.ColorRamp.Colors[1] = Colors.OrangeRed;
 		dashParticles.ScaleAmount = 3;
-		DashTimeout(dashTime);
 	}
-
-    private async void DashTimeout(float time)
+	private void ResetDashParticles()
 	{
-		GD.Print("Timeout");
-		await Task.Delay(TimeSpan.FromMilliseconds(time * 1000f));
         dashParticles.InitialVelocity = 0;
         dashParticles.LinearAccel = 0;
         dashParticles.Amount /= 10;
         dashParticles.ColorRamp.Colors[0] = Colors.DarkRed;
         dashParticles.ColorRamp.Colors[1] = Colors.IndianRed;
         dashParticles.ScaleAmount = 2;
-        moveSpeed = lastSpeed;
-		lastDash = DateTime.Now.AddSeconds(dashCooldown);
-		dashing = false;
 	}
 }
