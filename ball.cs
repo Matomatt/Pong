@@ -64,6 +64,7 @@ public class ball : KinematicBody2D
             speed += speed * speedMultiplier * delta + normal * raquette.getSpeed();
             if (speed.Length() > maxSpeed) speed = speed.Normalized() * maxSpeed;
             latestCollide[raquette.Name[raquette.Name.Length - 1] - '1'] = DateTime.Now.AddSeconds(timeBetweenCollisionCalculations);
+            raquette.Ping();
         }
 
     }
@@ -77,7 +78,7 @@ public class ball : KinematicBody2D
     {
         resetSpeed();
         GlobalPosition = new Vector2(0, 0);
-        score.goal(leftSide);
+        score.goal(leftSide); 
     }
 
     private async void ResetFieldColorDelayed()

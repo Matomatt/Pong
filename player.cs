@@ -9,17 +9,17 @@ public class player : KinematicBody2D
 	[Export]
 	private int playerNumber = 1;
 	private string pn = "";
+	private AnimatedSprite sprite;
 	[Export]
 	private bool flip = true;
 	[Export]
 	private int moveSpeed = 350;
 	private Vector2 playerSpeed = new Vector2(0, 0);
 	private int lastSpeed;
-	private int collisionPush = 100;
 	[Export]
 	private int acceleration = 20;
 	[Export]
-	private float dashTime = 0.2f;
+	private float dashTime = 0.15f;
 	[Export]
 	private float dashSpeedMultiplier = 2.5f;
 	private bool dashing = false;
@@ -32,10 +32,11 @@ public class player : KinematicBody2D
 	public override void _Ready()
 	{
 		pn = playerNumber.ToString();
-		this.GetChild<Sprite>(0).FlipH = flip;
+		(sprite = GetChild<AnimatedSprite>(0)).FlipH = flip;
+		sprite.Connect("animation_finished", this, nameof(Idle));
 		CollisionPolygon2D hitbox = this.GetChild<CollisionPolygon2D>(1);
 		if (flip) hitbox.Transform = new Transform2D((float)Math.PI, -1*hitbox.Transform.origin);
-		dashParticles = this.GetChild<CPUParticles2D>(2);
+		dashParticles = GetChild<CPUParticles2D>(2);
 		dashParticles.Transform = new Transform2D(0, new Vector2(dashParticles.Transform.origin.x * ((flip) ? -1 : 1), dashParticles.Transform.origin.y));
 		if (flip) { dashParticles.Gravity *= -1; dashParticles.Direction *= -1; }
 	}
@@ -65,6 +66,15 @@ public class player : KinematicBody2D
 	internal Vector2 getSpeed()
 	{
 		return playerSpeed;
+	}
+
+	internal void Ping()
+    {
+		sprite.Play("ping");
+    }
+	public void Idle()
+    {
+		sprite.Play("idle");
 	}
 
 	private async void Dash()
