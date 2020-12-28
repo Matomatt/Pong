@@ -3,10 +3,8 @@ using System;
 
 public class mainscene : Node2D
 {
-    [Export]
-    private float windowScale = 3f;
-    public override void _Ready()
+    public override void _PhysicsProcess(float delta)
     {
-        OS.WindowSize *= windowScale;
+        if (Input.IsActionPressed("quit")) GetTree().Quit();
     }
 }

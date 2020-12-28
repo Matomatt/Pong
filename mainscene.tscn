@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Sprites/raquette1.png" type="Texture" id=1]
 [ext_resource path="res://player.cs" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://Sprites/Fonts/8-bit-hud.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://Sprites/raquette3.png" type="Texture" id=8]
 [ext_resource path="res://Sprites/raquette2.png" type="Texture" id=9]
+[ext_resource path="res://Music and sounds/pongMainTheme2.wav" type="AudioStream" id=10]
+[ext_resource path="res://AudioStreamPlayer.cs" type="Script" id=11]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -166,3 +168,8 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+autoplay = true
+script = ExtResource( 11 )

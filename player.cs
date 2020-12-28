@@ -43,7 +43,6 @@ public class player : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
 	{
-		if (Input.IsActionPressed("quit")) GetTree().Quit();
 		if (lastDash.CompareTo(DateTime.Now) > 0) dashParticles.Emitting = false;
 		else if (!dashParticles.Emitting) dashParticles.Emitting = true;
 		if (Input.IsActionPressed("dash" + pn) && !dashing && lastDash < DateTime.Now) Dash();
