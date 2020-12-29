@@ -11,12 +11,20 @@ public class score : Label
         
     }
 
-    public void goal(bool left)
+    public bool Goal(bool left)
     {
         if (left) leftScore += 1;
         else rigthScore += 1;
 
         this.Text = leftScore + " : " + rigthScore;
+
+        if (Math.Max(leftScore, rigthScore) >= ((globalVariables)GetNode("/root/GlobalVariables")).winningScore)
+            return true;
+        return false;
     }
 
+    internal string get()
+    {
+        return leftScore + " : " + rigthScore;
+    }
 }

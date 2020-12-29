@@ -24,10 +24,12 @@ public class player : KinematicBody2D
 	private float dashSpeedMultiplier = 2.5f;
 	private bool dashing = false;
 	private Vector2 direction;
+	private Timer dashTimer;
 	[Export]
 	private float dashCooldown = 3;
 	private DateTime lastDash = DateTime.Now;
 	private CPUParticles2D dashParticles;
+	private Timer particlesTimer;
 
 	public override void _Ready()
 	{
@@ -39,6 +41,8 @@ public class player : KinematicBody2D
 		dashParticles = GetChild<CPUParticles2D>(2);
 		dashParticles.Transform = new Transform2D(0, new Vector2(dashParticles.Transform.origin.x * ((flip) ? -1 : 1), dashParticles.Transform.origin.y));
 		if (flip) { dashParticles.Gravity *= -1; dashParticles.Direction *= -1; }
+		(dashTimer = (Timer)GetNode("dashTimer")).Connect("timeout", this, nameof(DashTimeout));
+		(particlesTimer = (Timer)GetNode("particlesTimer")).Connect("timeout", this, nameof(ResetDashParticles));
 	}
 
     public override void _PhysicsProcess(float delta)
@@ -76,21 +80,18 @@ public class player : KinematicBody2D
 		sprite.Play("idle");
 	}
 
-	private async void Dash()
+	private void Dash()
     {
 		dashing = true;
 		lastSpeed = moveSpeed;
         moveSpeed = (int)(moveSpeed * dashSpeedMultiplier);
 		direction = playerSpeed.Normalized();
 		BurstDashParticles();
-		DashTimeout(dashTime);
-		await Task.Delay(TimeSpan.FromMilliseconds(dashTime * 1000f + 500));
-		ResetDashParticles();
+		dashTimer.Start(dashTime);
+		particlesTimer.Start(dashTime + 0.5f);
 	}
-    private async void DashTimeout(float time)
+    private void DashTimeout()
 	{
-		await Task.Delay(TimeSpan.FromMilliseconds(time * 1000f));
-
         moveSpeed = lastSpeed;
 		lastDash = DateTime.Now.AddSeconds(dashCooldown);
 		dashing = false;
@@ -106,11 +107,15 @@ public class player : KinematicBody2D
 	}
 	private void ResetDashParticles()
 	{
-        dashParticles.InitialVelocity = 0;
-        dashParticles.LinearAccel = 0;
-        dashParticles.Amount /= 10;
-        dashParticles.ColorRamp.Colors[0] = Colors.DarkRed;
-        dashParticles.ColorRamp.Colors[1] = Colors.IndianRed;
-        dashParticles.ScaleAmount = 2;
+		try
+        {
+			dashParticles.InitialVelocity = 0;
+			dashParticles.LinearAccel = 0;
+			dashParticles.Amount /= 10;
+			dashParticles.ColorRamp.Colors[0] = Colors.DarkRed;
+			dashParticles.ColorRamp.Colors[1] = Colors.IndianRed;
+			dashParticles.ScaleAmount = 2;
+		}
+		catch { }
 	}
 }

@@ -11,24 +11,15 @@ public class ball : KinematicBody2D
     [Export]
     private int maxSpeed = 800;
     private Vector2 speed;
-    private Color leftGoalColor;
-    private Color rightGoalColor;
-    private ColorRect field;
-    private Color fieldColor;
     private DateTime[] latestCollide = { DateTime.Now, DateTime.Now };
     [Export]
     private float timeBetweenCollisionCalculations = 0.1f;
-    private score score;
+    
 
     public override void _Ready()
     {
         GD.Randomize();
         resetSpeed();
-        leftGoalColor = ((ColorRect)GetNode(new NodePath("../goalLeftColor"))).Color;
-        rightGoalColor = ((ColorRect)GetNode(new NodePath("../goalRightColor"))).Color;
-        field = (ColorRect)GetNode(new NodePath("../field"));
-        fieldColor = field.Color;
-        score = (score)GetNode(new NodePath("../score"));
     }
 
     private void resetSpeed()
@@ -50,9 +41,11 @@ public class ball : KinematicBody2D
                 collideWith((player)collision.Collider, delta, collision.Normal);
             else if (colliderName.Contains("goal"))
             {
-                GoalVisualEffect(!colliderName.Contains("Left"));
-                Win(!colliderName.Contains("Left"));
+                resetSpeed();
+                GlobalPosition = new Vector2(0, 0);
+                ((mainscene)GetNode("/root/mainscene")).Goal(colliderName);
             }
+                
         }
     }
         
@@ -68,24 +61,5 @@ public class ball : KinematicBody2D
         }
 
     }
-
-    private void GoalVisualEffect(bool leftSide)
-    {
-        field.Color = (leftSide) ? leftGoalColor : rightGoalColor;
-        ResetFieldColorDelayed();
-    }
-    private void Win(bool leftSide)
-    {
-        resetSpeed();
-        GlobalPosition = new Vector2(0, 0);
-        score.goal(leftSide); 
-    }
-
-    private async void ResetFieldColorDelayed()
-    {
-        await Task.Delay(TimeSpan.FromMilliseconds(250));
-        field.Color = fieldColor;
-    }
-
     
 }
