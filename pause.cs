@@ -20,7 +20,7 @@ public class pause : CanvasLayer
         if (@event.IsActionPressed("quit")) GetTree().Quit();
     }
 
-    private void TogglePause()
+    internal void TogglePause()
     {
         if (((startCountdown)GetNode("/root/StartCountdown")).isCounting()) return;
         if (!GetTree().Paused) ((globalVariables)GetNode("/root/GlobalVariables")).PlaySfx("titootitoo.wav");
