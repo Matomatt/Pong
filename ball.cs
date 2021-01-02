@@ -11,7 +11,13 @@ public class ball : KinematicBody2D
     private DateTime[] latestCollide = { DateTime.Now, DateTime.Now };
     const float TIMEBETWEENCOLLISIONCALCULATIONS = 0.1f;
     public float speedModifier = 1f;
-    
+    [Export]
+    private float timeBeforeUnblocking = 1f;
+    private Vector2 lastPosition;
+    private DateTime blockingStartedAt = DateTime.Now;
+    [Export]
+    private float samplePositionInterval = 0.2f;
+    private float samplePositionTime = 0f;
 
     public override void _Ready()
     {
@@ -44,8 +50,29 @@ public class ball : KinematicBody2D
                 GlobalPosition = new Vector2(0, 0);
                 ((mainscene)GetNode("/root/mainscene")).Goal(colliderName);
             }
+        }
+
+        if (lastPosition.DistanceTo(GlobalPosition)>0.5) blockingStartedAt = DateTime.Now;
+        GD.Print(lastPosition.DistanceTo(GlobalPosition));
+        //GD.Print(touchingBall.ToString() + " + " + (int)lastPosition.x + " == " + (int)GlobalPosition.x + " && " + ((int)lastPosition.y == (int)GlobalPosition.y) + " - " + blockingStartedAt);
+        if (lastPosition.DistanceTo(GlobalPosition) <= 0.5 && blockingStartedAt.AddSeconds(timeBeforeUnblocking) < DateTime.Now)
+        {
+            GD.Print("BOOM");
+            player[] rackets = ((mainscene)GetNode("/root/mainscene")).rackets;
+            for (int i = 0; i < rackets.Length; i++)
+            {
+                GD.Print(rackets[i].GlobalPosition.x + " - " + GlobalPosition.x);
+                rackets[i].ApplyForce(new Vector2(rackets[i].GlobalPosition.x - GlobalPosition.x-256, rackets[i].GlobalPosition.y - GlobalPosition.y-128).Normalized());
+            }
                 
         }
+        samplePositionTime -= delta;
+        if (samplePositionTime <= 0)
+        {
+            lastPosition = GlobalPosition;
+            samplePositionTime = samplePositionInterval;
+        }
+        
     }
         
     internal void collideWith(player raquette, float delta, Vector2 normal)

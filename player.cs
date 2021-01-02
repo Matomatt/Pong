@@ -15,7 +15,6 @@ public class player : KinematicBody2D
 	[Export]
 	private int moveSpeed = 350;
 	private Vector2 playerSpeed = new Vector2(0, 0);
-	
 	[Export]
 	private int acceleration = 20; //Acceleration for the Lerp
 	[Export]
@@ -27,14 +26,9 @@ public class player : KinematicBody2D
 	private int touchedByID = -1;
 	private Vector2 targetPosition;
 	private int lastDistanceBetweenDrag = 0;
-	[Export]
-	private float timeBeforeUnblocking = 1f;
-	private Vector2 lastPosition;
-	private bool touchingBall = false;
-	private DateTime blockingStartedAt = DateTime.Now;
-	private float unblockingSpeed = 0;
-	private float unblockingAcceleration = 20f;
-	private Vector2 unblockingDirection = new Vector2(0,0);
+	private float appliedForce = 0;
+	private float forceWhittling = 20f;
+	private Vector2 forceDirection = new Vector2(0,0);
 	// SUPERPOWERS
 	[Export]
 	private string[] powers = { "dash", "zawarudo" };
@@ -108,31 +102,23 @@ public class player : KinematicBody2D
 		}
 
 		playerSpeed = playerSpeed.LinearInterpolate(speedGoal, acceleration * delta);
-		if (unblockingSpeed != 0) unblockingSpeed -= unblockingSpeed * unblockingAcceleration * delta;
-		//GD.Print(unblockingSpeed);
-		if (unblockingSpeed < 10) unblockingSpeed = 0;
-		MoveAndSlide(playerSpeed * speedModifier + unblockingDirection * unblockingSpeed);
-		if (GetSlideCount() == 0) touchingBall = false;
+		if (appliedForce != 0) appliedForce -= appliedForce * forceWhittling * delta;
+		if (appliedForce < 10) appliedForce = 0;
+		MoveAndSlide(playerSpeed * speedModifier + forceDirection * appliedForce);
 		for (int i = 0; i < GetSlideCount(); i++)
 		{
 			string colliderName = ((Node2D)GetSlideCollision(i).Collider).Name;
 			if (colliderName == "ball")
-            {
 				((ball)GetSlideCollision(i).Collider).collideWith(this, delta, -1 * GetSlideCollision(i).Normal);
-				unblockingDirection = GetSlideCollision(i).Normal;
-			}
-			touchingBall = (colliderName == "ball");
 		}
-		if (((int)lastPosition.x) != ((int)GlobalPosition.x) || ((int)lastPosition.y) != ((int)GlobalPosition.y)) blockingStartedAt = DateTime.Now;
-		GD.Print(touchingBall.ToString() + " + " + (int)lastPosition.x + " == " + (int)GlobalPosition.x + " && " + ((int)lastPosition.y == (int)GlobalPosition.y) + " - " + blockingStartedAt);
-		if (touchingBall && ((int)lastPosition.x) == ((int)GlobalPosition.x) && ((int)lastPosition.y) == ((int)GlobalPosition.y) && blockingStartedAt.AddSeconds(timeBeforeUnblocking) < DateTime.Now)
-        {
-			unblockingSpeed = 4000;
-			
-			GD.Print("BLOCKED SO BOOM");
-		}
-		lastPosition = GlobalPosition;
-	} 
+	}
+
+	internal void ApplyForce(Vector2 direction, float force = 2000f, float whittling = 10f)
+    {
+		forceDirection = direction;
+		appliedForce = force;
+		forceWhittling = whittling;
+    }
 
     public override void _Input(InputEvent @event)
     {

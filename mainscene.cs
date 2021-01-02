@@ -10,6 +10,7 @@ public class mainscene : Node2D
     private Color fieldColor;
     private score score;
     private Timer resetFieldColorTimer;
+    public player[] rackets = new player[2];
 
     public override void _Ready()
     {
@@ -21,6 +22,12 @@ public class mainscene : Node2D
         score = (score)GetNode("score");
         (resetFieldColorTimer = (Timer)GetNode("resetFieldColorTimer")).Connect("timeout", this, nameof(ResetFieldColor));
         ((startCountdown)GetNode("/root/StartCountdown")).Countdown();
+        for (int i = 0; i<rackets.Length; i++)
+        {
+            GD.Print("raquette" + (i + 1).ToString());
+            rackets[i] = (player)GetNode("raquette"+(i+1).ToString());
+        }
+            
     }
     public override void _Input(InputEvent @event)
     {
