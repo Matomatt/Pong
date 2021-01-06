@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://globalVariables.cs" type="Script" id=1]
 [ext_resource path="res://Music and sounds/Ping Pong The Animation OST Ping Pong Phase 1 & 2 [Extended].wav" type="AudioStream" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Music and sounds/titootitoo.wav" type="AudioStream" id=7]
 [ext_resource path="res://Music and sounds/blip.wav" type="AudioStream" id=8]
 [ext_resource path="res://Music and sounds/start.wav" type="AudioStream" id=9]
+[ext_resource path="res://Music and sounds/explosion.wav" type="AudioStream" id=10]
 
 [node name="globalVariables" type="CanvasLayer"]
 pause_mode = 2
@@ -22,4 +23,4 @@ playables = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ) ]
 [node name="sfxPlayer" type="AudioStreamPlayer" parent="."]
 autoplay = true
 script = ExtResource( 3 )
-playables = [ ExtResource( 5 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 9 ) ]
+playables = [ ExtResource( 5 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ) ]
