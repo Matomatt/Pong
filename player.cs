@@ -48,6 +48,8 @@ public class player : KinematicBody2D
 	const float SLOWDOWNDIVIDER = 4f;
 	const float SLOWDOWNDURATION = 1.5f;
 	public float speedModifier = 1f;
+	// Black Hole
+	const float BLACKHOLEDURATION = 1f;
 
 	public override void _Ready()
 	{
@@ -58,7 +60,14 @@ public class player : KinematicBody2D
 		CollisionPolygon2D hitbox = this.GetChild<CollisionPolygon2D>(1);
 		if (flip) hitbox.Transform = new Transform2D((float)Math.PI, -1*hitbox.Transform.origin);
 		// SUPERPOWERS
-		for (int i = 0; i< powerTimers.Length; i++){
+		globalVariables globalVariables = (globalVariables)GetNode("/root/GlobalVariables");
+		for (int i = 0; i<powers.Length; i++)
+        {
+			powers[i] = globalVariables.selectedPowers[(playerNumber - 1) * 2 + i];
+			foreach (Godot.Collections.Dictionary power in globalVariables.powers)
+				if (powers[i] == power["id"].ToString())
+					powerCooldownTimes[i] = power["cooldown"].ToString().ToFloat();
+
 			Godot.Collections.Array parametersArrays = new Godot.Collections.Array();
 			parametersArrays.Add(i);
 			(powerTimers[i] = (Timer)GetNode("powerTimer" + (i + 1).ToString())).Connect("timeout", this, nameof(PowerTimerTimeout), parametersArrays);
@@ -81,36 +90,56 @@ public class player : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
 	{
-		for (int i = 0; i < powers.Length; i++)
+		for (int i = 0; i < powers.Length; i++) {
 			if (powerParticles[i] != null) {
 				if (powerCooldowns[i].CompareTo(DateTime.Now) > 0) powerParticles[i].Emitting = false;
 				else if (!powerParticles[i].Emitting) powerParticles[i].Emitting = true;
 			}
-			
+		}
 
 		Vector2 speedGoalUnit = touchedByID >= 0 ? TouchToSpeedGoal() : InputsToSpeedGoal();
 		Vector2 speedGoal = speedGoalUnit * moveSpeed;
-		// SuperPowers influence
+
+		// SuperPowers
 		for (int i = 0; i < powers.Length; i++)
         {
-			switch (powers[i])
-			{
-				case "dash":
-					if (!powerTimers[i].IsStopped()) speedGoal = direction * moveSpeed;
-					break;
+			if (!powerTimers[i].IsStopped())
+            {
+				switch (powers[i])
+				{
+					case "dash":
+						speedGoal = direction * moveSpeed;
+						break;
+					case "blackhole":
+						player[] rackets = ((mainscene)GetNode("/root/mainscene")).rackets;
+						for (int j = 0; j < rackets.Length; j++)
+						{
+							if (j + 1 != playerNumber)
+							{
+								rackets[j].MoveAndCollideBis(GlobalPosition, delta);
+							}
+						}
+						ball ball = (ball)GetNode("../ball");
+						ball.MoveAndBounce(GlobalPosition, delta);
+						break;
+				}
 			}
 		}
 
 		playerSpeed = playerSpeed.LinearInterpolate(speedGoal, acceleration * delta);
 		if (appliedForce != 0) appliedForce -= appliedForce * forceWhittling * delta;
 		if (appliedForce < 10) appliedForce = 0;
-		MoveAndSlide(playerSpeed * speedModifier + forceDirection * appliedForce);
+
+		MoveAndCollideBis(playerSpeed * speedModifier + forceDirection * appliedForce, delta);
+	}
+
+	public void MoveAndCollideBis(Vector2 speed, float delta)
+    {
+		MoveAndSlide(speed);
+
 		for (int i = 0; i < GetSlideCount(); i++)
-		{
-			string colliderName = ((Node2D)GetSlideCollision(i).Collider).Name;
-			if (colliderName == "ball")
+			if (((Node2D)GetSlideCollision(i).Collider).Name == "ball")
 				((ball)GetSlideCollision(i).Collider).collideWith(this, delta, -1 * GetSlideCollision(i).Normal);
-		}
 	}
 
 	internal void ApplyForce(Vector2 direction, float force = 2000f, float whittling = 10f)
@@ -136,12 +165,8 @@ public class player : KinematicBody2D
 				touchedByID = -1;
 			else if (screenTouch.Position.DistanceTo(new Vector2(256, 0)) < 20)
 				((pause)GetNode("/root/Pause")).TogglePause(); 
-			else if (screenTouch.Position.x < 256 && playerNumber <= 2/2)
+			else if (screenTouch.Position.x < 256 && playerNumber <= 2/2 || screenTouch.Position.x >= 256 && playerNumber > 2 / 2)
 				ActivatePower(1, false);
-			else if (screenTouch.Position.x >= 256 && playerNumber > 2/2)
-				ActivatePower(1, false);
-
-			
 		} 
 		else if (@event is InputEventScreenDrag screenDrag)
         {
@@ -255,6 +280,13 @@ public class player : KinematicBody2D
 		for (int i = 1; i <= 2; i++)
 			if (i != playerNumber) ((player)GetNode("../raquette" + i.ToString())).speedModifier = 1;
 		((ball)GetNode("../ball")).speedModifier = 1;
+	}
+
+	//BlackHole
+	private float BlackHole()
+    {
+
+		return BLACKHOLEDURATION;
 	}
 	
 	// Animation

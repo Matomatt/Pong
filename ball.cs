@@ -15,6 +15,7 @@ public class ball : KinematicBody2D
     private float timeBeforeUnblocking = 1f;
     private Vector2 lastPosition;
     private DateTime blockingStartedAt = DateTime.Now;
+    private AnimatedSprite explosionAnimatedSprite;
     [Export]
     private float samplePositionInterval = 0.2f;
     private float samplePositionTime = 0f;
@@ -22,11 +23,11 @@ public class ball : KinematicBody2D
     public override void _Ready()
     {
         GD.Randomize();
-        resetSpeed();
-        ((AnimatedSprite)GetNode("../explosion")).Connect("animation_finished", this, nameof(ExplosionEnded));
+        ResetSpeed();
+        (explosionAnimatedSprite = (AnimatedSprite)GetNode("../explosion")).Connect("animation_finished", this, nameof(ExplosionEnded));
     }
 
-    private void resetSpeed()
+    internal void ResetSpeed()
     {
         speed = new Vector2((float)GD.RandRange(-1, 1), (float)GD.RandRange(-1, 1)).Normalized();
         speed *= INITIALSPEED;
@@ -36,7 +37,12 @@ public class ball : KinematicBody2D
         if (GlobalPosition.x > 256 || GlobalPosition.x < -256 || GlobalPosition.y > 128 | GlobalPosition.y < -128)
             GlobalPosition = new Vector2(0, 0);
 
-        KinematicCollision2D collision = MoveAndCollide(speed * delta * speedModifier, infiniteInertia: false);
+        MoveAndBounce(speed * speedModifier, delta);
+    }
+
+    internal void MoveAndBounce(Vector2 _speed, float delta)
+    {
+        KinematicCollision2D collision = MoveAndCollide(_speed*delta, infiniteInertia: false);
 
         if (collision != null && latestCollide[0].CompareTo(DateTime.Now) < 0)
         {
@@ -45,33 +51,33 @@ public class ball : KinematicBody2D
             if (colliderName.Contains("raquette"))
                 collideWith((player)collision.Collider, delta, collision.Normal);
             else if (colliderName.Contains("goal"))
-            {
-                resetSpeed();
-                GlobalPosition = new Vector2(0, 0);
                 ((mainscene)GetNode("/root/mainscene")).Goal(colliderName);
-            }
             latestCollide[0] = DateTime.Now.AddSeconds(TIMEBETWEENCOLLISIONCALCULATIONS);
         }
 
+        StuckExplosionCalculations(delta);
+    }
+
+    private void StuckExplosionCalculations(float delta)
+    {
         if (lastPosition.DistanceTo(GlobalPosition) > 0.5) blockingStartedAt = DateTime.Now;
 
         if (lastPosition.DistanceTo(GlobalPosition) <= 0.5 && blockingStartedAt.AddSeconds(timeBeforeUnblocking) < DateTime.Now)
         {
-            GD.Print("BOOM");
-            ((AnimatedSprite)GetNode("../explosion")).GlobalPosition = GlobalPosition + new Vector2(256, 128);
-            ((AnimatedSprite)GetNode("../explosion")).Play("boom");
+            explosionAnimatedSprite.GlobalPosition = GlobalPosition + new Vector2(256, 128);
+            explosionAnimatedSprite.Play("boom");
             ((globalVariables)GetNode("/root/GlobalVariables")).PlaySfx("explosion.wav");
             player[] rackets = ((mainscene)GetNode("/root/mainscene")).rackets;
             for (int i = 0; i < rackets.Length; i++)
-                rackets[i].ApplyForce(new Vector2(rackets[i].GlobalPosition.x - GlobalPosition.x-256, rackets[i].GlobalPosition.y - GlobalPosition.y-128).Normalized());
+                rackets[i].ApplyForce(new Vector2(rackets[i].GlobalPosition.x - GlobalPosition.x - 256, rackets[i].GlobalPosition.y - GlobalPosition.y - 128).Normalized());
         }
+
         samplePositionTime -= delta;
         if (samplePositionTime <= 0)
         {
             lastPosition = GlobalPosition;
             samplePositionTime = samplePositionInterval;
         }
-        
     }
         
     internal void collideWith(player raquette, float delta, Vector2 normal)
@@ -85,6 +91,6 @@ public class ball : KinematicBody2D
 
     private void ExplosionEnded()
     {
-        ((AnimatedSprite)GetNode("../explosion")).Play("default");
+        explosionAnimatedSprite.Play("default");
     }
 }

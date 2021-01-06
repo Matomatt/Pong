@@ -1,0 +1,185 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Sprites/raquette3.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/transparentButton256x32.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Fonts/8-bit-hud.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://labelButton.cs" type="Script" id=4]
+[ext_resource path="res://playerSelect.cs" type="Script" id=5]
+[ext_resource path="res://Sprites/back arrow.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/back arrow focused.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 7
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 10
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+outline_size = 2
+font_data = ExtResource( 3 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="blueRect" type="ColorRect" parent="."]
+anchor_bottom = 1.0
+margin_right = 256.0
+color = Color( 0.352941, 0.588235, 0.886275, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="redRect" type="ColorRect" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -256.0
+color = Color( 0.862745, 0.34902, 0.34902, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 32
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 480.0
+margin_bottom = 224.0
+custom_constants/separation = 128
+alignment = 1
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 9.0
+margin_right = 160.0
+margin_bottom = 192.0
+custom_constants/separation = 16
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
+margin_right = 151.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 1 )
+text = "Player 1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
+margin_top = 32.0
+margin_right = 151.0
+margin_bottom = 80.0
+texture_normal = ExtResource( 1 )
+stretch_mode = 3
+
+[node name="OptionButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
+margin_top = 96.0
+margin_right = 151.0
+margin_bottom = 114.0
+custom_fonts/font = SubResource( 4 )
+text = "<select power 1>"
+flat = true
+align = 1
+
+[node name="OptionButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
+margin_top = 130.0
+margin_right = 151.0
+margin_bottom = 148.0
+custom_fonts/font = SubResource( 4 )
+text = "<select power 2>"
+flat = true
+align = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 288.0
+margin_right = 439.0
+margin_bottom = 192.0
+custom_constants/separation = 16
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 151.0
+margin_bottom = 16.0
+custom_fonts/font = SubResource( 2 )
+text = "Player 2"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton2" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 32.0
+margin_right = 151.0
+margin_bottom = 80.0
+texture_normal = ExtResource( 1 )
+stretch_mode = 3
+
+[node name="OptionButton1" type="OptionButton" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 96.0
+margin_right = 151.0
+margin_bottom = 114.0
+custom_fonts/font = SubResource( 4 )
+text = "<select power 1>"
+flat = true
+align = 1
+
+[node name="OptionButton2" type="OptionButton" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 130.0
+margin_right = 151.0
+margin_bottom = 148.0
+custom_fonts/font = SubResource( 4 )
+text = "<select power 2>"
+flat = true
+align = 1
+
+[node name="startButton" type="TextureButton" parent="."]
+margin_left = 128.0
+margin_top = 208.0
+margin_right = 384.0
+margin_bottom = 240.0
+texture_normal = ExtResource( 2 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="startButton"]
+anchor_right = 1.0
+margin_bottom = 27.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.0823529, 0.662745, 0.513726, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+text = "Start"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="backButton" type="TextureButton" parent="."]
+margin_right = 50.0
+margin_bottom = 50.0
+texture_normal = ExtResource( 7 )
+texture_hover = ExtResource( 6 )
+texture_focused = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "dash",
+    "name": "Dash",
+    "cooldown": 3.0,
+    "type" :  1
+  },
+  {
+    "id": "zawarudo",
+    "name": "ZA WARUDO",
+    "cooldown": 4.0,
+    "type": 2
+  },
+  {
+    "id": "blackhole",
+    "name": "Black Hole",
+    "cooldown": 5.0,
+    "type": 2
+  }
+]

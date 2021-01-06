@@ -29,9 +29,8 @@ public class menu : Control
     }
     private void StartGame()
     {
-        GD.Print("Starting the game !");
         ((globalVariables)GetNode("/root/GlobalVariables")).PlaySfx("start.wav");
-        GetTree().ChangeScene("mainscene.tscn");
+        GetTree().ChangeScene("playerSelect.tscn");
     }
     
     private void Settings()

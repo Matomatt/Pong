@@ -42,15 +42,15 @@
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 1 ), ExtResource( 9 ), ExtResource( 8 ) ],
-"loop": false,
-"name": "ping",
-"speed": 12.0
-}, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 9 ), ExtResource( 8 ) ],
+"loop": false,
+"name": "ping",
+"speed": 12.0
 } ]
 
 [sub_resource type="Gradient" id=2]
@@ -66,11 +66,11 @@ extents = Vector2( 10, 148 )
 [sub_resource type="CircleShape2D" id=5]
 radius = 6.0
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=6]
 size = 10
 font_data = ExtResource( 7 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=7]
 animations = [ {
 "frames": [  ],
 "loop": false,
@@ -103,8 +103,8 @@ __meta__ = {
 }
 
 [node name="goalRightColor" type="ColorRect" parent="."]
-margin_left = 502.0
-margin_right = 512.0
+margin_left = 502.265
+margin_right = 512.265
 margin_bottom = 256.0
 color = Color( 0.862745, 0.34902, 0.34902, 1 )
 __meta__ = {
@@ -240,7 +240,7 @@ texture = ExtResource( 3 )
 margin_left = 236.0
 margin_right = 276.0
 margin_bottom = 14.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 6 )
 text = "0 : 0"
 align = 1
 script = ExtResource( 6 )
@@ -252,7 +252,7 @@ __meta__ = {
 one_shot = true
 
 [node name="explosion" type="AnimatedSprite" parent="."]
-frames = SubResource( 6 )
+frames = SubResource( 7 )
 frame = -1
 playing = true
 offset = Vector2( 0, 2 )
